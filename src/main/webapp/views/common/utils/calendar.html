@@ -1,0 +1,47 @@
+<div class="month" ng-if="weeks.length>0">
+    <ul>
+        <li class="prev" ng-click="previous()"> < </li>
+        <li class="next" ng-click="next()"> > </li>
+        <li class="header" ng-click="generateMonth(month)">{{month.format("MMMM, YYYY")}}</li>
+    </ul>
+</div>
+<div class="month" ng-if="months.length>0">
+    <ul>
+        <li class="prev" ng-click="previousYears(mon)"> < </li>
+        <li class="next" ng-click="nextYears(mon)"> > </li>
+        <li class="header" ng-click="generateYears(mon)">{{mon.format("YYYY")}}</li>
+    </ul>
+</div>
+<div class="month" ng-if="rangeYrs.length>0">
+    <ul>
+        <li class="prev" ng-click="previousDecade(years)"> < </li>
+        <li class="next" ng-click="nextDecade(last)"> > </li>
+        <li class="header">{{years.format("YYYY")}}-{{last.format("YYYY")}}</li>
+    </ul>
+</div>
+<div ng-if="weeks.length>0">
+<ul class="weekdays">
+    <li> Sun </li>
+    <li> Mon </li>
+    <li> Tue </li>
+    <li> Wed </li>
+    <li> Thu </li>
+    <li> Fri </li>
+    <li> Sat </li>
+</ul>
+
+<ul class="days" ng-repeat="week in weeks">
+    <li ng-if="week.days" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected),multiple: day.multiples,disabled:day.disabled }" ng-click="select(day)" ng-repeat="day in week.days">{{day.number}}</li>
+    <!-- <li ng-if="week.name" ng-click="select(day)">{{week.name}}</li> -->
+</ul>
+</div>
+<div ng-if="months.length>0">
+<ul class="months">
+    <li ng-class="{current: month.isCurrentMonth}" ng-repeat="month in months" ng-click="generateDaysInMonth(month.date,month.date.year(),month.date.month())">{{month.name}}</li>
+</li>
+</div>
+<div ng-if="rangeYrs.length>0">
+<ul class="months">
+    <li ng-class="{current: year.isCurrentYear, notCurrentDecade:!year.isCurrentDecade}" ng-repeat="year in rangeYrs" ng-click="generateMonth(year.year)">{{year.year.format('YYYY')}}</li>
+</li>
+</div>

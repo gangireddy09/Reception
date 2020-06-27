@@ -1,0 +1,55 @@
+<div class="card">
+	<form name="opAddForm" novalidate>
+		<div class="row">
+			<label class="grid-md-4" for="opDoctor">O.P. Doctor </label>
+			<div class="grid-md-1"><b>:</b></div>
+			<div class="grid-md-7">
+				<select class="form-field grid-md-12" id="opDoctor" data-ng-model="op.doctor" name="opDoctor"
+					data-ng-options="doctor as doctor.name for doctor in doctorList" required>
+					<option value="">Select Doctor</option>
+					</select> <span class="error-msg"
+					data-ng-messages="opAddForm.opDoctor.$error"> <span
+					data-ng-message="required">Doctor Name Required</span></span>
+			</div>
+		</div>
+		<div class="row">
+			<label class="grid-md-4">&nbsp;</label>
+			<div class="grid-md-1">&nbsp;</div>
+			<div class="grid-md-7">
+				<input type="checkbox" data-ng-model="op.isFuture" ng-change="setIsFutureDate()"> Future Date
+			</div>
+		</div>
+		<div class="row" ng-if="op.isFuture">
+			<label class="grid-md-4">O.P. Date</label>
+			<div class="grid-md-1"><b>:</b></div>
+			<div class="grid-md-7">
+				<tc-date-picker placeholder="Select Date" options="dateOptions" ng-model="op.opDate"></tc-date-picker>
+			</div>
+		</div>
+		<div class="row">
+			<label class="grid-md-4" >O.P. Name</label>
+			<div class="grid-md-1"><b>:</b></div>
+			<div class="grid-md-7">
+				<select class="form-field grid-md-7"id="opName" ng-options="opType as opType for opType in opTypes" ng-model="op.name" required>
+					<option value="">Select O.P. Name</option>
+				</select>
+				<span class="error-msg"
+					ng-messages="opAddForm.opName.$error"> <span
+					ng-message="required">O.P Name Required</span></span>
+			</div>
+		</div>
+		<div class="row">
+			<label class="grid-md-4"></label>
+			<div class="grid-md-8">
+				<button class="btn btn-sky-blue btn-sm" name="opAddForm"
+					data-ng-disabled="opAddForm.$invalid" data-ng-click="createOp()">Create
+					O.P.</button>
+			</div>
+		</div>
+		<div class="row" ng-if="errorMsg">
+			<div class="grid-md-8">
+				<span class="color-red">*This O.P. Exists. Can not be created !</span>
+			</div>
+		</div>
+	</form>
+</div>

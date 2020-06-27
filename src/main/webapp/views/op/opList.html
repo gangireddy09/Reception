@@ -1,0 +1,81 @@
+<div class="page-content">
+	<h2 class="page-title">Op</h2>
+	<div class="row no-padding-left no-padding-right no-padding-bottom">
+		<div class="grid-md-8 card grade-linear min-height-300 no-padding">
+			<div class="row card padding-left-25">
+				<div class="grid-md-4">
+					<label for="opDate"><b>Op Date</b></label>
+					<div class="relative">
+						<tc-date-picker placeholder="Choose a date" ng-model="opDate"></tc-date-picker>
+					</div>
+				</div>
+				<div class="grid-md-3" align="center" >
+					<label class="grid-md-12">&nbsp;</label>
+					<div>
+						<button class="btn btn-md btn-light-green" ng-click="getOpList()">Search</button>
+					</div>
+				</div>
+				<div class="grid-md-4 no-padding">
+					<div class="row no-padding">
+						<div class="no-padding">
+							<div>
+								<label ng-if="!opList.length" class="color-red font-12">
+									<strong>Create a new OP.</strong>
+								</label>
+							</div>
+							<div ng-if="opList.length">
+								<label class="grid-md-12">&nbsp;</label>
+							</div>
+							<div>
+								<button class="btn btn-lg btn-sky-blue margin-left-30" ng-click="openOpForm()">Create OP</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row padding-10px mar-top-5">
+		<div class="grid-md-9 color-red text-center font-20" ng-if="!opList.length"><span>No Op's Found . . .</span></div>
+		<div class="grid-md-12 card" ng-if="opList.length">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>S.No</th>
+						<th>Doctor Name</th>
+						<th>Op Name</th>
+						<th>Op Patients</th>
+						<th>Consulted</th>
+						<th>Pending</th>
+						<th>Skipped</th>
+						<th>Actions</th>												
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="op in opList">
+						<td>{{$index+1}}</td>
+						<td>{{op.doctorName}}</td>
+						<td>{{op.opName}}</td>
+						<td>{{op.consulted + op.pending +
+							op.skipped}}</td>
+						<td>{{op.consulted}}</td>
+						<td>{{op.pending}}</td>
+						<td>{{op.skipped}}</td>
+						<td>	
+							<button class="btn btn-md btn-sky-blue" type="button" title="view" ui-sref="opPatientSearch({opId : op.id})">
+								<i class="fa fa-eye"></i>
+							</button>
+							<button class="btn btn-md btn-light-green" type="button" ui-sref="addOpPatient({opId : op.id})">
+								<i class="fa fa-plus"></i>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>																							
+		</div>
+	</div>
+</div>
+<div class="overlay absolute" ng-class="{'show':formLoader}"></div>
+<div class="form-loader" ng-class="{'show':formLoader}">
+	<i class="fa fa-refresh fa-spin"></i>
+</div>

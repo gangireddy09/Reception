@@ -1,0 +1,21 @@
+<div>
+	<div class="row">
+		<div class="grid-md-8 no-padding">
+			<div class="row card no-padding color-blue">
+				<div class="row no-padding">
+					<div class="grid-md-2 bg-color-orange">OP INFO</div>
+					<div class="grid-md-3">{{op.doctorName}}</div>
+					<div class="grid-md-1">|</div>
+					<div class="grid-md-2">{{op.opDate |date:'dd-MM-yyyy'}}</div>
+					<div class="grid-md-1">|</div>
+					<div class="grid-md-3">{{op.opName}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="grid-md-4 no-padding ">
+			<button class="btn btn-md btn-purple pull-right mar-left-2" ui-sref="opPatientSearch({opId : op.id})">OP PATIENT LIST</button>
+			
+		</div>
+	</div>
+</div>
+<op-patient-form op = "op" op-id = "opId" on-save="saveOpPatient(opId)"></op-patient-form>

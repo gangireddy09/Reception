@@ -1,0 +1,497 @@
+<style>
+	.img-patient{
+		height : 80px;
+		width : 80px;
+	}
+	.custom-tab .nav-tabs{
+		width: 57%;
+	    float: right !important;
+	    position: relative;
+	}
+</style>
+<div class="hidden-print">
+	<div class="row no-padding ">
+		<div class="grid-md-12 ">
+			<div class="row no-padding">
+				<div class="grid-md-3 no-padding-left">
+					<div class="tc-card tc-card-primary">
+						<div class="tc-card-header">OP Info</div>
+						<div class="tc-card-body">
+							<div class="row text-left">
+								<div class="grid-md-5 font-14">
+									<div>{{opView.opDate |date:'dd-MM-yyyy'}}</div>
+									<div>{{opView.opName}}</div>
+								</div>
+								<div class="grid-md-7 font-16">
+									<div>{{opView.doctorName}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="grid-md-2">
+					<div class="tc-card tc-card-warning">
+						<div class="tc-card-header">NEW</div>
+						<div class="tc-card-body">{{opView.pending}}</div>
+					</div>
+				</div>
+				<div class=" grid-md-2">
+					<div class="tc-card tc-card-success">
+						<div class="tc-card-header">CONSULTED</div>
+						<div class="tc-card-body">{{opView.consulted}}</div>
+					</div>
+				</div>
+				<div class=" grid-md-1pnt5 ">
+					<div class="tc-card tc-card-danger">
+						<div class="tc-card-header">SKIPPED</div>
+						<div class="tc-card-body">{{opView.skipped}}</div>
+					</div>
+				</div>
+				<div class=" grid-md-1pnt5 ">
+					<div class="tc-card ">
+						<div class="tc-card-header">Lab</div>
+						<div class="tc-card-body">{{opView.lab}}</div>
+					</div>
+				</div>
+				<div class=" grid-md-2 no-padding-right">
+					<div class="tc-card tc-card-info">
+						<div class="tc-card-header">TOTAL</div>
+						<div class="tc-card-body">{{opView.pending + opView.skipped + opView.consulted}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="grade-linear">
+			<div class="row card">
+				<div class="grid-md-12">
+					<div class="row">
+						<div class="grid-md-2">
+							<input type="search" class="grid-md-12 form-field" ng-model="searchObj.patient.name" placeholder="Enter Name..." />
+						</div>
+						<div class="grid-md-2">
+							<select class="grid-md-12 form-field" required="required" ng-model="searchObj.opType" ng-options="optype as optype.opType for optype in opTypes track by optype.id"></select>
+						</div>
+						<div class="grid-md-2">
+							<input type="search" class="grid-md-12 form-field" ng-model="searchObj.patient.mobileNo" placeholder="Enter Mobile No..." />
+						</div>
+						<div class="grid-md-2">
+							<input type="search" class="grid-md-12 form-field" ng-model="searchObj.patient.village" placeholder="Enter village..." />
+						</div>
+						<div class="grid-md-4">
+							<div class="pull-right">
+								<button class="btn btn-sky-blue pull-right"	ui-sref="addOpPatient({opId : opId })">ADD OP PATIENT</button>
+							</div>
+							<div class="pull-left">
+								<button class="btn btn-md btn-blue" ng-click="searchOpPatient()">
+									<i class="fa fa-searh"></i>SEARCH
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="grid-md-12">
+					<div class="row auto">
+						<div class="grid-md-12">
+							<uib-tabset active="active">
+								<uib-tab heading="General ({{generalOpList.length}})" >
+									<div class="row color-red text-center font-20" ng-if="!generalOpList.length">
+										<span>No General Op Patients Found . . .</span>
+									</div>
+									<div class="grid-md-12 text-center card-full-height-66 vertical-scroll" ng-if="generalOpList.length">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>S.No</th>
+													<th>Photo</th>
+													<th>Patient Name</th>
+													<th>OpType</th>
+													<th>Mobile No.</th>
+													<th>Compliant</th>
+													<th ng-click="sort(false)"><span class="sort">Created Time <i class="fa fa-sort"></i></span></th>
+													<th ng-click="sort(true)"><span class="sort">Status <i class="fa fa-sort"></i></span></th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="opPatient in generalOpList">
+													<td>{{$index+1}}</td>
+													<td><img  src="/hc-rest/patient/getphoto?patientId={{opPatient.patient.id}}" class="img-patient"  style="border:2px solid gray"></td>
+													<td>{{opPatient.patient.name}}</td>
+													<td>{{opPatient.opType.opType}}</td>
+													<td>{{opPatient.patient.mobileNo}}</td>
+													<td>{{opPatient.complaint}}</td>
+													<td>{{opPatient.createdOn |date:"dd/MM/yyyy h:mma"}}</td>
+													<td>{{opPatient.status}}</td>
+													<td>
+														<div class="row text-center">
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-light-green btn-rounded" ng-click="print('opPatientProfile',opPatient)" title="OP Patient Profile Print">
+																 	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-green">Profile</strong>
+																</div>
+															</div>
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-purple btn-rounded" ng-click="print('opPatientProfileDocList',opPatient)" title="OP Patient Profile With Doctors List Print">
+																	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-violet">Profile With Doctors</strong>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</uib-tab>
+								<uib-tab heading="Emegrency ({{emergencyOpList.length}})" >
+									<div class="row color-red text-center font-20" ng-if="!emergencyOpList.length">
+										<span>No Op Patients Found . . .</span>
+									</div>
+									<div class="grid-md-12 text-center card-full-height-66 vertical-scroll" ng-if="emergencyOpList.length">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>S.No</th>
+													<th>Photo</th>
+													<th>Patient Name</th>
+													<th>OpType</th>
+													<th>Mobile No.</th>
+													<th>Compliant</th>
+													<th ng-click="sort(false)"><span class="sort">Created Time <i class="fa fa-sort"></i></span></th>
+													<th ng-click="sort(true)"><span class="sort">Status <i class="fa fa-sort"></i></span></th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="opPatient in emergencyOpList">
+													<td>{{$index+1}}</td>
+													<td><img  src="/hc-rest/patient/getphoto?patientId={{opPatient.patient.id}}" class="img-patient"  style="border:2px solid gray"></td>
+													<td>{{opPatient.patient.name}}</td>
+													<td>{{opPatient.opType.opType}}</td>
+													<td>{{opPatient.patient.mobileNo}}</td>
+													<td>{{opPatient.complaint}}</td>
+													<td>{{opPatient.createdOn |date:"dd/MM/yyyy h:mma"}}</td>
+													<td>{{opPatient.status}}</td>
+													<td>
+														<div class="row text-center">
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-light-green btn-rounded" ng-click="print('opPatientProfile',opPatient)" title="OP Patient Profile Print">
+																 	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-green">Profile</strong>
+																</div>
+															</div>
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-purple btn-rounded" ng-click="print('opPatientProfileDocList',opPatient)" title="OP Patient Profile With Doctors List Print">
+																	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-violet">Profile With Doctors</strong>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</uib-tab>
+								<uib-tab heading="Phone call ({{phoneCallOpList.length}})" >
+									<div class="row color-red text-center font-20" ng-if="!phoneCallOpList.length">
+										<span>No Op Patients Found . . .</span>
+									</div>
+									<div class="grid-md-12 text-center card-full-height-66 vertical-scroll" ng-if="phoneCallOpList.length">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>S.No</th>
+													<th>Photo</th>
+													<th>Patient Name</th>
+													<th>OpType</th>
+													<th>Mobile No.</th>
+													<th>Compliant</th>
+													<th ng-click="sort(false)"><span class="sort">Created Time <i class="fa fa-sort"></i></span></th>
+													<th ng-click="sort(true)"><span class="sort">Status <i class="fa fa-sort"></i></span></th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="opPatient in phoneCallOpList">
+													<td>{{$index+1}}</td>
+													<td><img  src="/hc-rest/patient/getphoto?patientId={{opPatient.patient.id}}" class="img-patient"  style="border:2px solid gray"></td>
+													<td>{{opPatient.patient.name}}</td>
+													<td>{{opPatient.opType.opType}}</td>
+													<td>{{opPatient.patient.mobileNo}}</td>
+													<td>{{opPatient.complaint}}</td>
+													<td>{{opPatient.createdOn |date:"dd/MM/yyyy h:mma"}}</td>
+													<td>{{opPatient.status}}</td>
+													<td>
+														<div class="row text-center">
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-light-green btn-rounded" ng-click="print('opPatientProfile',opPatient)" title="OP Patient Profile Print">
+																 	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-green">Profile</strong>
+																</div>
+															</div>
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-purple btn-rounded" ng-click="print('opPatientProfileDocList',opPatient)" title="OP Patient Profile With Doctors List Print">
+																	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-violet">Profile With Doctors</strong>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</uib-tab>
+								<uib-tab heading="Review Op ({{reviewOpList.length}})" >
+									<div class="row color-red text-center font-20" ng-if="!reviewOpList.length">
+										<span>No Op Patients Found . . .</span>
+									</div>
+									<div class="grid-md-12 text-center card-full-height-66 vertical-scroll" ng-if="reviewOpList.length">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>S.No</th>
+													<th>Photo</th>
+													<th>Patient Name</th>
+													<th>OpType</th>
+													<th>Mobile No.</th>
+													<th>Compliant</th>
+													<th ng-click="sort(false)"><span class="sort">Created Time <i class="fa fa-sort"></i></span></th>
+													<th ng-click="sort(true)"><span class="sort">Status <i class="fa fa-sort"></i></span></th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="opPatient in reviewOpList">
+													<td>{{$index+1}}</td>
+													<td><img  src="/hc-rest/patient/getphoto?patientId={{opPatient.patient.id}}" class="img-patient"  style="border:2px solid gray"></td>
+													<td>{{opPatient.patient.name}}</td>
+													<td>{{opPatient.opType.opType}}</td>
+													<td>{{opPatient.patient.mobileNo}}</td>
+													<td>{{opPatient.complaint}}</td>
+													<td>{{opPatient.createdOn |date:"dd/MM/yyyy h:mma"}}</td>
+													<td>{{opPatient.status}}</td>
+													<td>
+														<div class="row text-center">
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-light-green btn-rounded" ng-click="print('opPatientProfile',opPatient)" title="OP Patient Profile Print">
+																 	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-green">Profile</strong>
+																</div>
+															</div>
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-purple btn-rounded" ng-click="print('opPatientProfileDocList',opPatient)" title="OP Patient Profile With Doctors List Print">
+																	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-violet">Profile With Doctors</strong>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</uib-tab>
+								<uib-tab heading="Free Op ({{freeOpList.length}})" >
+									<div class="row color-red text-center font-20" ng-if="!freeOpList.length">
+										<span>No Op Patients Found . . .</span>
+									</div>
+									<div class="grid-md-12 text-center card-full-height-66 vertical-scroll" ng-if="freeOpList.length">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>S.No</th>
+													<th>Photo</th>
+													<th>Patient Name</th>
+													<th>OpType</th>
+													<th>Mobile No.</th>
+													<th>Compliant</th>
+													<th ng-click="sort(false)"><span class="sort">Created Time <i class="fa fa-sort"></i></span></th>
+													<th ng-click="sort(true)"><span class="sort">Status <i class="fa fa-sort"></i></span></th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="opPatient in freeOpList">
+													<td>{{$index+1}}</td>
+													<td><img  src="/hc-rest/patient/getphoto?patientId={{opPatient.patient.id}}" class="img-patient"  style="border:2px solid gray"></td>
+													<td>{{opPatient.patient.name}}</td>
+													<td>{{opPatient.opType.opType}}</td>
+													<td>{{opPatient.patient.mobileNo}}</td>
+													<td>{{opPatient.complaint}}</td>
+													<td>{{opPatient.createdOn |date:"dd/MM/yyyy h:mma"}}</td>
+													<td>{{opPatient.status}}</td>
+													<td>
+														<div class="row text-center">
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-light-green btn-rounded" ng-click="print('opPatientProfile',opPatient)" title="OP Patient Profile Print">
+																 	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-green">Profile</strong>
+																</div>
+															</div>
+															<div class="grid-md-6">
+																<button type="button" class="btn btn-sm btn-purple btn-rounded" ng-click="print('opPatientProfileDocList',opPatient)" title="OP Patient Profile With Doctors List Print">
+																	<i class="fa fa-print"></i>
+																</button>
+																<div>
+																	<strong class="font-12 color-violet">Profile With Doctors</strong>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</uib-tab>
+								<uib-tab heading="Labs">
+									<uib-tabset class="custom-tab">
+									    <uib-tab heading="Inprogress ({{labTestsInprogressList.length}})">
+										    <div class="row color-red text-center font-20" ng-if="!labTestsInprogressList.length">
+												<span>No Op Patients Found . . .</span>
+											</div>
+											<div class="grid-md-12 text-center card-full-height-66 vertical-scroll" ng-if="labTestsInprogressList.length">
+												<table class="table table-striped">
+													<thead>
+														<tr>
+															<th>S.No</th>
+															<th>Photo</th>
+															<th>Patient Name</th>
+															<th>OpType</th>
+															<th>Mobile No.</th>
+															<th>Compliant</th>
+															<th ng-click="sort(false)"><span class="sort">Created Time <i class="fa fa-sort"></i></span></th>
+															<th ng-click="sort(true)"><span class="sort">Status <i class="fa fa-sort"></i></span></th>
+															<th></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="patient in labTestsInprogressList">
+															<td>{{$index+1}}</td>
+															<td><img  src="/hc-rest/patient/getphoto?patientId={{patient.opPatient.patient.id}}" class="img-patient"  style="border:2px solid gray"></td>
+															<td>{{patient.opPatient.patient.name}}</td>
+															<td>{{patient.opPatient.opType.opType}}</td>
+															<td>{{patient.opPatient.patient.mobileNo}}</td>
+															<td>{{patient.opPatient.complaint}}</td>
+															<td>{{patient.opPatient.createdOn |date:"dd/MM/yyyy h:mma"}}</td>
+															<td>{{patient.opPatient.status}}</td>
+															<td>
+																<div class="row text-center">
+																	<div class="grid-md-6">
+																		<button type="button" class="btn btn-sm btn-light-green btn-rounded" ng-click="print('opPatientProfile',patient.opPatient)" title="OP Patient Profile Print">
+																		 	<i class="fa fa-print"></i>
+																		</button>
+																		<div>
+																			<strong class="font-12 color-green">Profile</strong>
+																		</div>
+																	</div>
+																	<div class="grid-md-6">
+																		<button type="button" class="btn btn-sm btn-purple btn-rounded" ng-click="print('opPatientProfileDocList',patient.opPatient)" title="OP Patient Profile With Doctors List Print">
+																			<i class="fa fa-print"></i>
+																		</button>
+																		<div>
+																			<strong class="font-12 color-violet">Profile With Doctors</strong>
+																		</div>
+																	</div>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+									    </uib-tab>
+									    <uib-tab heading="Completed ({{labTestsCompletedList.length}})">
+										    <div class="row color-red text-center font-20" ng-if="!labTestsCompletedList.length">
+												<span>No Op Patients Found . . .</span>
+											</div>
+											<div class="grid-md-12 text-center card-full-height-66 vertical-scroll" ng-if="labTestsCompletedList.length">
+												<table class="table table-striped">
+													<thead>
+														<tr>
+															<th>S.No</th>
+															<th>Photo</th>
+															<th>Patient Name</th>
+															<th>OpType</th>
+															<th>Mobile No.</th>
+															<th>Compliant</th>
+															<th ng-click="sort(false)"><span class="sort">Created Time <i class="fa fa-sort"></i></span></th>
+															<th ng-click="sort(true)"><span class="sort">Status <i class="fa fa-sort"></i></span></th>
+															<th></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="patient in labTestsCompletedList">
+															<td>{{$index+1}}</td>
+															<td><img  src="/hc-rest/patient/getphoto?patientId={{patient.opPatient.patient.id}}" class="img-patient"  style="border:2px solid gray"></td>
+															<td>{{patient.opPatient.patient.name}}</td>
+															<td>{{patient.opPatient.opType.opType}}</td>
+															<td>{{patient.opPatient.patient.mobileNo}}</td>
+															<td>{{patient.opPatient.complaint}}</td>
+															<td>{{patient.opPatient.createdOn |date:"dd/MM/yyyy h:mma"}}</td>
+															<td>{{patient.opPatient.status}}</td>
+															<td>
+																<div class="row text-center">
+																	<div class="grid-md-6">
+																		<button type="button" class="btn btn-sm btn-light-green btn-rounded" ng-click="print('opPatientProfile',patient.opPatient)" title="OP Patient Profile Print">
+																		 	<i class="fa fa-print"></i>
+																		</button>
+																		<div>
+																			<strong class="font-12 color-green">Profile</strong>
+																		</div>
+																	</div>
+																	<div class="grid-md-6">
+																		<button type="button" class="btn btn-sm btn-purple btn-rounded" ng-click="print('opPatientProfileDocList',patient.opPatient)" title="OP Patient Profile With Doctors List Print">
+																			<i class="fa fa-print"></i>
+																		</button>
+																		<div>
+																			<strong class="font-12 color-violet">Profile With Doctors</strong>
+																		</div>
+																	</div>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+									    </uib-tab>
+								 	</uib-tabset>
+								</uib-tab>
+							</uib-tabset>
+						</div>
+					</div>
+				</div>
+				<div class="overlay absolute" ng-class="{'show':formLoader}"></div>
+				<div class="form-loader" ng-class="{'show':formLoader}">
+					<i class="fa fa-refresh fa-spin"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="hide" ng-class="{'visible-print-block':printPage=='opPatientProfile'}">
+	<ng-include src="'./views/common/print/oppatient-profile-print.html'"></ng-include>
+</div>
+<div class="hide" ng-class="{'visible-print-block':printPage=='opPatientProfileDocList','hidden-print':printPage!='opPatientProfileDocList'}">
+	<ng-include src="'./views/common/print/oppatient-profile-doctor-list-print.html'"></ng-include>
+</div> 

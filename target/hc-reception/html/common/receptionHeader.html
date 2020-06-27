@@ -1,0 +1,24 @@
+<div class="top-navbar clear">
+	<div class="logo-container">
+		<div class="menu-handler pull-left" ng-click="toggleMenuExpansion()">
+			<i class="fa fa-bars"></i>
+		</div>
+		<img class="logo" src="./assets/images/hospital-logo.png" alt="Hospital" />
+		<h1 class="logo-title">Sura Reddy Nursing Home</h1>
+	</div>
+	<div class="nav-menu">
+		<ul class="menu">
+			<li>
+				<a ui-sref="reception" class="color-white" title="Home"><strong>Home</strong></a>
+			</li>
+			<li>
+				<strong class="color-white" ng-bind="sessionUserName || 'Receptionist'"></strong>
+			</li>
+			<li>
+				<a class="color-red" ui-sref="login">
+					<i class="fa fa-power-off"></i>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>

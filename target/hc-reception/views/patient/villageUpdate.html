@@ -1,0 +1,59 @@
+<style>
+.img-patient {
+	height: 40px;
+	width: 45px;
+}
+</style>
+<div class="patient-search-container padding-10">
+	<div class="grid-md-12"> <h2>Patient village Update</h2></div>
+		<div class="grid-md-12">
+			<form name="villageUpdateForm" class="grid-md-12">
+				<input type="search" class="grid-md-4 form-field"
+					ng-model="searchvillage" placeholder="Enter Village..." /> <input
+					type="text" class="grid-md-4 form-field" required
+					ng-model="villageName" placeholder="Enter correct Village Name..." />
+				<button class="btn btn-sm btn-blue form-field"
+					ng-disabled="villageUpdateForm.$invalid || !selectedVillageList.length" ng-click="updateVillage()">
+					Submit</button>
+			</form>
+		</div>
+	<div class="card grid-md-12 row">
+		<div class="grid-md-12 row">
+			<div
+				class=" grid-md-6  card card-full-height-66 vertical-scroll border-around"
+				ng-show="villageList.length">
+				<div class="grid-md-12 text-center"><h3>Village List</h3></div>
+				<div class="grid-md-12 row"
+					ng-repeat="village in villageList | filter:searchvillage">
+					<div class="grid-md-10">
+						<span ng-bind="village"></span>
+					</div>
+					<div class="grid-md-2">
+						<span><i class="fa fa-plus pointer-cursor"
+							ng-click="selectVillage(village)"></i> </span>
+					</div>
+				</div>
+			</div>
+			<div
+				class=" grid-md-6  card card-full-height-66 vertical-scroll border-around"
+				ng-show="selectedVillageList.length">
+				<div class="grid-md-12 text-center"><h3>Selected Village List</h3></div>
+				<div class="grid-md-12 row"
+					ng-repeat="village in selectedVillageList">
+					<div class="grid-md-10">
+						<span ng-bind="village"></span>
+					</div>
+					<div class="grid-md-2">
+						<span><i class="fa fa-minus pointer-cursor"
+							ng-click="unSelectVillage(village)"></i> </span>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="overlay absolute" ng-class="{'show':formLoader}"></div>
+		<div class="form-loader" ng-class="{'show':formLoader}">
+			<i class="fa fa-refresh fa-spin"></i>
+		</div>
+</div>

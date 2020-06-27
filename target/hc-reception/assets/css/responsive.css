@@ -1,0 +1,42 @@
+@media screen and (max-width: 767px){
+	.logo-container>.menu-handler {
+	    font-size: 20px;
+	    margin-top: 22px;
+	    display: block!important;
+	    color: white;
+	}
+	
+	.side-navbar.expanded {
+	    display: block;
+	    left: 0;
+	    top: 70px;
+	    max-height: calc(100vh - 70px);
+	    z-index: 1030;
+	}
+	
+	.side-navbar {
+	    display: none;
+	    max-height: none;
+	}
+	.content-wrapper{
+		margin-top: 100px;
+		position: inherit;
+	}
+	.row>.card{
+		overflow: auto;
+	}
+	.card>.patientForm-headline h3{
+		font-size:13px;
+	}
+	.ng-camera{
+		overflow: -webkit-paged-x;
+	}
+}
+
+
+@media screen and (max-width: 500px){
+	.logo-container>.logo-title{
+		font-size: 18px;
+    	margin-top: 24px;
+	}
+}

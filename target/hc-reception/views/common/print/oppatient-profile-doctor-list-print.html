@@ -1,0 +1,196 @@
+<style>
+@media print {
+	.logo-img {
+		position: relative;
+		top: -50px;
+		width: 140px;
+	}
+	.logo-img img {
+		width: 160px;
+		height: auto;
+	}
+	.head-right {
+		margin-top: 68px;
+	}
+	.doctors-info {
+		width: 190px;
+		height: 500px;
+		float: left;
+		padding: 5px;
+		line-height: 70%;
+	}
+	.doctors-info>.doctor {
+		margin-bottom: 5px;
+	}
+	.doctors-info>.doctor * {
+		line-height: 1.1;
+	}
+	.doctors-info>.doctor tr.doctor-name>td {
+		font-size: 16px;
+		font-weight: 700;
+		font-style: italic;
+	}
+	.doctors-info>.doctor .specialization {
+		font-size: 10px;
+		font-weight: 400;
+	}
+	.doctors-info>.doctor .expert-in {
+		font-size: 9px;
+	}
+	.doctors-info>.doctor .comes-on {
+		font-size: 11px;
+		font-weight: 700;
+	}
+	.patient-profile {
+		float: left;
+		width: calc(100% -182px);
+		padding: 5px;
+	}
+	.patient-info {
+		width: 100%;
+		float: right;
+		
+	}
+	.patient-img {
+		height:120px;
+		width:120px; 
+	}
+	.print-header * {
+		margin-bottom: 0;
+		margin-top: 0;
+	}
+	.heading {
+		text-align: left;
+		font-size: 25px;
+		font-weight: 700;
+	}
+	.doctor-info * {
+		text-align: left !important;
+		font-size: 12px;
+	}
+	.doctor-info .doctor-name {
+		float: left;
+		font-size: 24px;
+		font-weight: 500;
+	}
+	.doctor-info .spacialization-regdno {
+		float: left;
+		padding-left: 3px;
+		font-size: 12px;
+	}
+	.doctor-info .spacialization-regdno div{
+		margin-top:8px;
+	}
+	.side-menu{
+	margin-top:-30px;
+	}
+	.sign-auth{
+	  position:absolute;
+	  float:right;
+	  bottom:0px;
+	  right:0px;    
+	}
+	/* .hsptl-logo{
+		margin-top:-130px;
+	}
+	.doctor{
+	font-size:14px;
+	}
+	.doctor-name{
+		font-weight:bold;
+		font-size:22px;
+	}
+	.doctor-name-header{
+		font-weight:bold;
+		font-size:22px;
+	}	
+	.spacialization-regdno div{
+		padding-top:6px;
+	}
+	 */
+	 
+}
+</style>
+<div style="position:relative;">
+	<div class="header-hsptl grid-md-12 no-padding">
+		<ng-include src="'./views/common/print/print-header-full.html'"></ng-include>
+	</div>
+	<div class="side-menu grid-md-3 no-padding">
+		<ng-include src="'./views/common/print/print-doctors-list.html'"></ng-include>
+	</div>
+	<div class="right-content grid-md-9  no-padding pull-right">
+		<div class="row ">
+			<div class="patient-profile grid-md-8">
+				<table>
+					<tr>
+						<td colspan="2">
+							<label>Token No:</label><strong>{{printOpPatient.tokenNo}}</strong>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<label>Name:</label><strong>{{printOpPatient.patient.name}}</strong>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<label>Id Label:</label><strong>{{printOpPatient.patient.idLabel}}</strong>
+						</td>
+					</tr>
+					<tr>
+						<td><label>Mobile:</label><strong>{{printOpPatient.patient.mobileNo}}</strong></td>
+					</tr>
+					<tr ng-if="printOpPatient.opType.opType=='INSURANCE' || printOpPatient.opType.opType=='EHS'" colspan="3">
+						<td class="grid-md-4">Card No.</td>
+						<th class="grid-md-5">{{printOpPatient.cardNo}}</th>
+					</tr>
+					<tr>
+						<td>
+							<table>
+								<tr>
+									<td><label>Height:</label>
+									<strong>{{printOpPatient.height}} cm</strong></td>
+								</tr>
+								<tr>
+									<td><label>Temp:</label>
+									<strong>{{printOpPatient.temperature}}<sup>o</sup>F</strong></td>
+								</tr>
+								<tr>
+									<td><label>B.P:</label>
+									<strong>{{printOpPatient.bp}}</strong></td>
+								</tr>
+							</table>
+						</td>
+						<td>
+							<table>
+								<tr>
+									<td>Village</td>
+									<td><strong>{{printOpPatient.patient.village}}</strong></td>
+								</tr>
+								<tr>
+									<td><label>Weight:</label></td>
+									<td><strong>{{printOpPatient.weight}} Kg</strong></td>
+								</tr>
+								<tr>
+									<td><label>Pulse:</label></td>
+									<td><strong>{{printOpPatient.pulse}} BPM</strong></td>
+								</tr>
+								<tr>
+									<td>Sugar</td>
+									<td><strong>{{printOpPatient.sugar}}</strong></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="grid-md-2">
+				<img  class="patient-img" ng-src="/hc-rest/patient/getphoto?patientId={{printOpPatient.patient.id}}" style="border:2px solid gray">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="sign-auth">
+	<label><strong>Authorized Sign</strong></label>
+	<!-- <div class="text-center">{{sessionUserName}}</div> -->
+</div>

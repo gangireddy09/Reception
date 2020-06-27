@@ -1,0 +1,177 @@
+<style>
+@media print{
+	.table tr td,.table tr th{
+		padding:2px !important;
+		font-size:12px;
+			}
+	.hsptl-name{
+		font-weight:bold;
+		font-size:14px;
+	}
+	.patient-card tr td,.patient-card tr th{
+		padding:1.8px !important;
+		border:none;
+		
+	}
+	.bordered{
+		border:1px solid lightgrey;
+	}
+	.patient-op-head{
+		border-bottom: 1px solid gray;
+		font-size: 13px;
+		margin-top:20px; 
+	}
+	.v-line{
+		height:110px;
+		border-left:1px solid lightgrey;
+		position:absolute;
+		left:340px;
+		top:0px;
+	}
+	.sign-auth{
+	  position:absolute;
+	  float:right;
+	  bottom:0px;
+	  right:0px;    
+	}
+	.img-patient{
+		height:120px;
+		width:120px;  
+	}
+}
+</style>
+<div class="">
+	<table class="table  no-padding bordered">
+		<tbody><tr>
+			<td class="grid-md-6 no-padding">
+				<table class="grid-md-12  no-padding ">
+					<tr>
+						<td class="grid-md-3" >
+							<img src="./assets/images/hospital-logo.png"/>
+						</td>
+						<td class="hsptl-address text-center grid-md-9 ">
+							<div  class="hsptl-name">SURA REDDY NURSING HOME</div>
+							<div>High School Road, Pandalapaka</div>
+							<div>Ph.No: 08857 &#8722 233454</div>
+							<strong>Consultation Fee Receipt</strong>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td class="grid-md-6 no-padding" >
+				<table class="grid-md-12  patient-card no-padding">
+					<tr>
+						<td>Token No</td>
+						<th colspan="3">: {{printOpPatient.tokenNo}}</th>
+					</tr>
+					<tr>
+						<td>Name</td>
+						<th colspan="3">: {{printOpPatient.patient.name}}</th>
+					</tr>
+					<tr>
+						<td>P Id</td>
+						<th colspan="3">: {{printOpPatient.patient.idLabel}}</th>
+					</tr>
+					<tr>
+						<td>Age/Sex</td>
+						<th class="grid-md-10">: {{printOpPatient.patient.age}}/{{printOpPatient.patient.gender}}</th>
+					</tr>
+					<tr>
+						<td >Ph.No </td>
+						<th>: {{printOpPatient.patient.mobileNo}}</th>
+					</tr>
+					<tr>
+						<td>Reg Date</td>
+						<th colspan="3">: {{printOpPatient.createdOn | date: 'dd-MMM-yyyy'}}</th>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		
+	</tbody></table>
+	<span class="patient-op-head "><strong>PatientOp Details</strong></span>
+	<table class="table no-padding" style="margin-top: 10px">	
+		<tbody><tr>
+			<td colspan="2">
+				<table class="grid-md-9 no-padding ">
+					<tbody><tr>
+						<td class="grid-md-4">OpType</td>
+						<th  class="grid-md-5">{{printOpPatient.opType.opType}}</th>
+						
+						<td >Fee</td>
+						<th>
+							<span ng-show="printOpPatient.consultFee">{{printOpPatient.consultFee}} Rupees</span>
+							<span ng-show="!printOpPatient.consultFee">{{printOpPatient.consultFee}} Rupees</span>
+						</th>
+					</tr>
+					<tr ng-if="printOpPatient.opType.opType=='INSURANCE' || printOpPatient.opType.opType=='EHS'">
+						<td class="grid-md-4">Card No.</td>
+						<th class="grid-md-5">{{printOpPatient.cardNo}}</th>
+					</tr>
+					<tr>
+						<td  class="grid-md-4">{{printOpPatient.patient.relationType}}</td>
+						<th  class="grid-md-5">{{printOpPatient.patient.relationName}}</th>
+						<td>Village</td>
+						<th>{{printOpPatient.patient.village}}</th>
+					</tr>
+					<tr>
+						<td class="grid-md-4"><label>Height</label></td>
+						<th  class="grid-md-5">{{printOpPatient.height}} cm</th>
+						<td><label>Weight</label></td>
+						<th>{{printOpPatient.weight}}Kg</th>
+					</tr>
+					<tr>
+						<td class="grid-md-4"><label>Temperature</label></td>
+						<th  class="grid-md-5">{{printOpPatient.temperature}}<sup>o</sup>F</th>
+						<td >Pulse</td>
+						<th>{{printOpPatient.pulse}}BPM</th>
+					</tr>
+					<tr>
+						<td class="grid-md-4"><label>B.P</label></td>
+						<th  class="grid-md-5">{{printOpPatient.bp}}</th>
+						<td>Sugar</td>
+						<th>{{printOpPatient.sugar}}</th>
+					</tr>
+					<tr>
+						<td class="grid-md-4">Complaint</td>
+						<th class="grid-md-5">{{printOpPatient.complaint}}</th>
+						<td>BMI
+						</td>
+						<th>
+							<strong ng-show="(printOpPatient.height && printOpPatient.weight && (printOpPatient.patient.age*1 >= 18))">
+								{{(printOpPatient.weight)/((printOpPatient.height*1/100)*(printOpPatient.height*1/100)) | number:0}}
+							</strong>
+							<strong ng-show="!(printOpPatient.height && printOpPatient.weight && (printOpPatient.patient.age*1 >= 18))">
+								NA
+							</strong>
+						</th>
+					</tr>
+
+					<tr ng-show="printOpPatient.consultFee" >
+						<td class="grid-md-4" >In Words</td>
+						<th class="grid-md-8" colspan="5">
+							<strong>{{printOpPatient.consultFee.toTextString()}}</strong>
+						</th>
+					</tr>
+					<tr >
+						<td colspan="4">
+							Received with thanks from  <strong>{{printOpPatient.patient.patientName}}</strong>  OP Sum of 
+							<strong>{{printOpPatient.consultFee}}</strong> Rupees
+						</td>
+					</tr>
+				</table>
+				<div class=" grid-md-2 ">
+					<img  src="/hc-rest/patient/getphoto?patientId={{printOpPatient.patient.id}}" class="grid-md-12 img-patient"  style="border:2px solid gray">
+				</div>
+				<div class="clear"></div>
+			</td>
+		</tr>
+	</tbody></table>
+<div class="v-line">
+</div>
+<div class="clear"></div>	
+	<div class="sign-auth">
+		<label><strong>Authorized Sign</strong></label>
+		<!-- <div class="text-center">{{sessionUserName}}</div> -->
+	</div>
+</div>
